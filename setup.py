@@ -15,7 +15,8 @@
 import codecs
 from os.path import join, dirname, abspath
 
-from setuptools import setup
+from setuptools import setup, find_packages
+from cylc_cassettes import __version__
 
 here = abspath(dirname(__file__))
 
@@ -48,15 +49,15 @@ extras_require = {
 }
 
 setup(
-    version="0.1",
+    version=__version__,
     name="cylc-cassettes",
     description="VCR cassette recorded for Cylc",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
     entry_points={
-        "console_scripts": ["cylc-cassettes=cylc-cassettes:main"]
+        "console_scripts": ["cylc-cassettes=cylc_cassettes.main:main"]
     },
-    py_modules=['cylc_cassettes'],
+    packages=find_packages(),
     python_requires='>=3.7',
     install_requires=install_requires,
     tests_require=tests_require,
