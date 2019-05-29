@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: '{"operationName": null, "variables": "", "query": "{\n    workflows {\n        id\n        name\n        owner\n        host\n        port\n    }\n}\n"}'
+    headers:
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8000/user/kinow/graphql/graphiql?
+  response:
+    body:
+      string: '{"data":{"workflows":[{"id":"kinow/five","name":"five","owner":"kinow","host":"ranma","port":43082}]}}'
+    headers:
+      connection:
+      - close
+      content-length:
+      - '102'
+      content-type:
+      - application/json
+      date:
+      - Wed, 29 May 2019 23:21:37 GMT
+      server:
+      - TornadoServer/6.0.2
+    status:
+      code: 200
+      message: OK
+version: 1
