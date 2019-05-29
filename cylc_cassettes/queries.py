@@ -25,27 +25,84 @@ QUERY_SUITE_STATE = """{
 }
 """
 
-QUERY_SUITE_TASKS_STATE = """{
-    workflows {
-        id
-        owner
-        name
-        host
-        port
-        tasks {
-            id
-            name
-            meta {
-                title
-                description
-                URL
-            }
-            meanElapsedTime
-            namespace
-            proxies {
-                id
-            }
-        }
+
+def get_query_suite_tasks_state_variables(workflow_id):
+    return {
+        "wIds": [
+            workflow_id
+        ],
+        "minDepth": 0,
+        "maxDepth": 4
     }
-}
+
+
 """
+{
+  "wIds": ["%s"],
+  "minDepth": 0,
+  "maxDepth": 4 
+}
+
+"""
+
+QUERY_SUITE_TASKS_STATE = """fragment treeNest on FamilyProxy {
+  name
+  cyclePoint
+  state
+  depth
+  childTasks(ids: $nIds, states: $nStates, mindepth: $minDepth, maxdepth: $maxDepth) {
+    id
+    state
+    latestMessage
+    depth
+    jobs {
+      id
+      host
+      batchSysName
+      batchSysJobId
+      submittedTime
+      startedTime
+      finishedTime
+      submitNum
+    }
+  }
+}
+
+query tree($wIds: [ID], $nIds: [ID], $nStates: [String], $minDepth: Int, $maxDepth: Int) {
+  workflows(ids: $wIds) {
+    id
+    name
+    status
+    stateTotals {
+      runahead
+      waiting
+      held
+      queued
+      expired
+      ready
+      submitFailed
+      submitRetrying
+      submitted
+      retrying
+      running
+      failed
+      succeeded
+    }
+    treeDepth
+  }
+  familyProxies(workflows: $wIds, ids: ["root"]) {
+    ...treeNest
+    childFamilies(mindepth: $minDepth, maxdepth: $maxDepth) {
+      ...treeNest
+      childFamilies(mindepth: $minDepth, maxdepth: $maxDepth) {
+        ...treeNest
+        childFamilies(mindepth: $minDepth, maxdepth: $maxDepth) {
+          ...treeNest
+          childFamilies(mindepth: $minDepth, maxdepth: $maxDepth) {
+            ...treeNest
+          }
+        }
+      }
+    }
+  }
+}"""

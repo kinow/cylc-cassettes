@@ -53,7 +53,7 @@ def record_suite_state(url: str, workflow: str):
     """
     params = {
         "operationName": None,
-        "variables": None,
+        "variables": "",
         "query": QUERY_SUITE_STATE
     }
 
@@ -78,12 +78,12 @@ def record_suite_tasks_state(url: str, workflow: str, seconds: float):
 
     Args:
         url (str): GraphQL URL
-        workflow (str): workflow name
+        workflow (str): workflow id
         seconds (float): period
     """
     params = {
-        "operationName": None,
-        "variables": None,
+        "operationName": "tree",
+        "variables": get_query_suite_tasks_state_variables(workflow),
         "query": QUERY_SUITE_TASKS_STATE
     }
 
@@ -110,7 +110,7 @@ def record_suite_tasks_state(url: str, workflow: str, seconds: float):
 @click.command()
 @click.option('--url', required=True, help='GraphQL endpoint URL.')
 @click.option('--interval', required=True, type=float, help='Interval to wait before querying tasks states.')
-@click.option('--workflow', required=True, help='Workflow name.')
+@click.option('--workflow', required=True, help='Workflow ID.')
 def main(url: str, interval: float, workflow: str):
     logger.info(f"Recording cassettes for workflow '{workflow}'', using URL '{url}'' and interval '{interval}'")
 
