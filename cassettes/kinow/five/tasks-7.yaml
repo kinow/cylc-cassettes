@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: '{"operationName": "tree", "variables": {"wIds": ["kinow/five"], "minDepth":
+      0, "maxDepth": 4}, "query": "fragment treeNest on FamilyProxy {\n  name\n  cyclePoint\n  state\n  depth\n  childTasks(ids:
+      $nIds, states: $nStates, mindepth: $minDepth, maxdepth: $maxDepth) {\n    id\n    task
+      {\n      name\n    }\n    state\n    latestMessage\n    depth\n    jobs {\n      id\n      host\n      batchSysName\n      batchSysJobId\n      submittedTime\n      startedTime\n      finishedTime\n      submitNum\n    }\n  }\n}\n\nquery
+      tree($wIds: [ID], $nIds: [ID], $nStates: [String], $minDepth: Int, $maxDepth:
+      Int) {\n  workflows(ids: $wIds) {\n    id\n    name\n    status\n    stateTotals
+      {\n      runahead\n      waiting\n      held\n      queued\n      expired\n      ready\n      submitFailed\n      submitRetrying\n      submitted\n      retrying\n      running\n      failed\n      succeeded\n    }\n    treeDepth\n  }\n  familyProxies(workflows:
+      $wIds, ids: [\"root\"]) {\n    ...treeNest\n    childFamilies(mindepth: $minDepth,
+      maxdepth: $maxDepth) {\n      ...treeNest\n      childFamilies(mindepth: $minDepth,
+      maxdepth: $maxDepth) {\n        ...treeNest\n        childFamilies(mindepth:
+      $minDepth, maxdepth: $maxDepth) {\n          ...treeNest\n          childFamilies(mindepth:
+      $minDepth, maxdepth: $maxDepth) {\n            ...treeNest\n          }\n        }\n      }\n    }\n  }\n}"}'
+    headers:
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8000/user/kinow/graphql/graphiql?
+  response:
+    body:
+      string: '{"data":{"workflows":[{"id":"kinow/five","name":"five","status":"running
+        to stop at 20130812T0000Z","stateTotals":{"runahead":0,"waiting":0,"held":0,"queued":0,"expired":0,"ready":2,"submitFailed":0,"submitRetrying":0,"submitted":0,"retrying":0,"running":0,"failed":0,"succeeded":16},"treeDepth":1}],"familyProxies":[{"name":"root","cyclePoint":"20130808T0000Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130808T1200Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130809T0000Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130809T1200Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130810T0000Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130810T1200Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130811T0000Z","state":"succeeded","depth":0,"childTasks":[],"childFamilies":[]},{"name":"root","cyclePoint":"20130811T1200Z","state":"ready","depth":0,"childTasks":[{"id":"kinow/five/20130811T1200Z/foo","task":{"name":"foo"},"state":"succeeded","latestMessage":"succeeded","depth":1,"jobs":[{"id":"kinow/five/20130811T1200Z/foo/01","host":"localhost","batchSysName":"background","batchSysJobId":"15667","submittedTime":"2019-06-05T04:04:57Z","startedTime":"2019-06-05T04:04:57Z","finishedTime":"2019-06-05T04:04:57Z","submitNum":1}]},{"id":"kinow/five/20130811T1200Z/bar","task":{"name":"bar"},"state":"ready","latestMessage":"","depth":1,"jobs":[{"id":"kinow/five/20130811T1200Z/bar/01","host":"localhost","batchSysName":"background","batchSysJobId":"","submittedTime":"","startedTime":"","finishedTime":"","submitNum":1}]}],"childFamilies":[]},{"name":"root","cyclePoint":"20130812T0000Z","state":"ready","depth":0,"childTasks":[{"id":"kinow/five/20130812T0000Z/foo","task":{"name":"foo"},"state":"ready","latestMessage":"","depth":1,"jobs":[{"id":"kinow/five/20130812T0000Z/foo/01","host":"localhost","batchSysName":"background","batchSysJobId":"","submittedTime":"","startedTime":"","finishedTime":"","submitNum":1}]}],"childFamilies":[]}]}}'
+    headers:
+      connection:
+      - close
+      content-length:
+      - '2259'
+      content-type:
+      - application/json
+      date:
+      - Wed, 05 Jun 2019 04:05:05 GMT
+      server:
+      - TornadoServer/6.0.2
+    status:
+      code: 200
+      message: OK
+version: 1
