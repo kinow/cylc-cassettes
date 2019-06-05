@@ -52,6 +52,9 @@ QUERY_SUITE_TASKS_STATE = """fragment treeNest on FamilyProxy {
   depth
   childTasks(ids: $nIds, states: $nStates, mindepth: $minDepth, maxdepth: $maxDepth) {
     id
+    task {
+      name
+    }
     state
     latestMessage
     depth
